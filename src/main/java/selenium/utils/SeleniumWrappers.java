@@ -3,6 +3,7 @@ package selenium.utils;
 import java.time.Duration;
 import java.util.NoSuchElementException;
 
+import framework.utils.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,16 +51,23 @@ public class SeleniumWrappers extends BaseTest{
 
 
     public void click(WebElement element) {
+        Log.info("call method <click()> on element " + element);
 
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration. ofSeconds(5));
+            Log.info("call method <wait for visibility()> on element " + element);
             wait.until(ExpectedConditions.visibilityOf(element));
             //WebElement element = driver.findElement(locator);
             element.click();
+            Log.info("method <click()> finished " + element);
 
         }catch(NoSuchElementException e) {
+            Log.error("Error in method <click() > " + e.getMessage());
             WebDriverWait wait = new WebDriverWait(driver, Duration. ofSeconds(5));
             wait.until(ExpectedConditions.elementToBeClickable(element));
+            Log.info("Retry method <click()> on element " + element);
+            element.click();
+            throw  new TestException("Error on click() on element " + element);
         }
 
         //driver.findElement(locator).click();
@@ -70,10 +78,13 @@ public class SeleniumWrappers extends BaseTest{
 
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration. ofSeconds(5));
+            Log.info("call method <wait for visibility()> on element " + element);
             wait.until(ExpectedConditions.visibilityOf(element));
             //WebElement element = driver.findElement(locator);
+            Log.info("call method <clear()> on element " + element);
             element.clear();
             element.sendKeys(text);
+            Log.info("method <sendKeys()> finished" + element);
 
         }catch(NoSuchElementException e) {
 

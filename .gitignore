@@ -9,3 +9,5 @@ db.properties
 *.iml
 test-output/
 credentials.properties
+logs/
+screenshots/
